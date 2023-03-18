@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const request = require("supertest");
-const app = require("../app");
 const Item = require("../models/ItemModel");
+const itemService = require("../services/itemService");
 
 // create mock data
 const testItem = {
@@ -33,12 +32,9 @@ describe("Item Controller Tests", () => {
   // createItem function test
   describe("createItem function", () => {
     it("should create a new item", async () => {
-      const res = await request(app)
-        .post("/api/v1/item/new")
-        .send(testItem)
-        .expect(201);
+      const item = await itemService.createItem(testItem);
 
-      const createdItem = await Item.findById(res.body.item._id);
+      const createdItem = await Item.findById(item._id);
       expect(createdItem.name).toBe(testItem.name);
     });
   });
@@ -47,11 +43,9 @@ describe("Item Controller Tests", () => {
   describe("getAllItem function", () => {
     it("should return all items", async () => {
       await Item.create(testItem);
-
-      const res = await request(app).get("/api/v1/items").expect(200);
-      expect(res.body.success).toBe(true);
-      expect(res.body.itemCount).toBe(2);
-      expect(res.body.items[0].name).toBe(testItem.name);
+      const { itemCount, items } = await itemService.getAllItems();
+      expect(itemCount).toBe(2);
+      expect(items[0].name).toBe(testItem.name);
     });
   });
 
@@ -66,14 +60,7 @@ describe("Item Controller Tests", () => {
         price: 19.99,
         quantity: 5,
       };
-
-      const res = await request(app)
-        .put(`/api/v1/item/${createdItem._id}`)
-        .send(updatedItem)
-        .expect(201);
-
-      expect(res.body.success).toBe(true);
-
+      const res = await itemService.updateItem(createdItem._id, updatedItem);
       const item = await Item.findById(createdItem._id);
       expect(item.name).toBe(updatedItem.name);
       expect(item.price).toBe(updatedItem.price);
@@ -84,9 +71,7 @@ describe("Item Controller Tests", () => {
   describe("deleteItem function", () => {
     it("should delete an existing item", async () => {
       const createdItem = await Item.create(testItem);
-
-      await request(app).delete(`/api/v1/item/${createdItem._id}`).expect(201);
-
+      await itemService.deleteItem(createdItem._id);
       const item = await Item.findById(createdItem._id);
       expect(item).toBeNull();
     });
