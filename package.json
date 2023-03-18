@@ -1,0 +1,22 @@
+{
+  "name": "my-item",
+  "version": "1.0.0",
+  "description": "CRUD app with functionalities of Add/Update/Delete/Get items",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --runInBand",
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.2",
+    "nodemon": "^2.0.21",
+    "supertest": "^6.3.3"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}
