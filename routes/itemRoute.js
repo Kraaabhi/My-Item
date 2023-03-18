@@ -20,16 +20,15 @@ const router = express.Router();
  *           description: name of item
  *         price:
  *           type: string
- *           description:  Item price
- *         description: 
- *            type: string
- *             description: Item descriptions
+ *           description: Item price
+ *         description:
+ *           type: string
+ *           description: Item descriptions
  *       example:
  *         id: d5fE_asz
  *         name: Item1
- *         description:this is item1 
- *         price:10
- * 
+ *         description: this is item1
+ *
  */
 
  /**
